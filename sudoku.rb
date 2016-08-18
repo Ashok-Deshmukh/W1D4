@@ -1,6 +1,7 @@
 require_relative "board"
 require 'colorize'
 
+
 puts "Only contractors write code this bad.".yellow
 
 class SudokuGame
@@ -10,7 +11,7 @@ class SudokuGame
   end
 
   def initialize(board)
-    @board = [[]]
+    @board = board
   end
 
   def method_missing(method_name, *args)
@@ -29,7 +30,7 @@ class SudokuGame
       print "> "
 
       begin
-        pos = parse_pos(gets.chomp)
+        pos = parse_pos
       rescue
         # TODO: Google how to print the error that happened inside of a rescue statement.
         puts "Invalid position entered (did you use a comma?)"
@@ -68,6 +69,14 @@ class SudokuGame
     board.solved?
   end
 
+  def parse_val(val)
+    Integer(val)
+  end
+
+  def parse_pos
+    gets.split(",").map(&:strip).map(&:to_i)
+  end
+
   def valid_pos?(pos)
     pos.is_a?(Array) &&
       pos.length == 2 &&
@@ -85,3 +94,4 @@ end
 
 
 game = SudokuGame.from_file("puzzles/sudoku1.txt")
+game.run
